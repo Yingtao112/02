@@ -9,10 +9,10 @@ import os
 
 def get_color():
     # 获取随机颜色
-    def get_colors(n): return ["#" + "%06x" %
-                               random.randint(0， 0xFFFFFF) for _ 在 range(n)]
+    get_colors = lambda n: ["#" + "%06x" % random.randint(0, 0xFFFFFF) for _ in range(n)]
     color_list = get_colors(100)
     return random.choice(color_list)
+
 
 
 def get_access_token():
@@ -21,7 +21,7 @@ def get_access_token():
     # appSecret
     app_secret = config["app_secret"]
     post_url = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}"
-                .format(app_id, app_secret))
+                。format(app_id, app_secret))
     try:
         access_token = get(post_url)。json()['access_token']
     except KeyError:
