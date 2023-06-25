@@ -9,7 +9,7 @@ import os
 
 def get_color():
     # 获取随机颜色
-    get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0, 0xFFFFFF), range(n)))
+    get_colors = lambda n: list(map(lambda i: "#" + "%06x" % random.randint(0， 0xFFFFFF)， range(n)))
     color_list = get_colors(100)
     return random.choice(color_list)
 
@@ -20,9 +20,9 @@ def get_access_token():
     # appSecret
     app_secret = config["app_secret"]
     post_url = ("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={}&secret={}"
-                .format(app_id, app_secret))
+                。format(app_id, app_secret))
     try:
-        access_token = get(post_url).json()['access_token']
+        access_token = get(post_url)。json()['access_token']
     except KeyError:
         print("获取access_token失败，请检查app_id和app_secret是否正确")
         os.system("pause")
@@ -37,8 +37,8 @@ def get_weather(region):
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
     key = config["weather_key"]
-    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}".format(region, key)
-    response = get(region_url, headers=headers).json()
+    region_url = "https://geoapi.qweather.com/v2/city/lookup?location={}&key={}"。format(region, key)
+    response = get(region_url, headers=headers)。json()
     if response["code"] == "404":
         print("推送消息失败，请检查地区名是否有误！")
         os.system("pause")
@@ -50,8 +50,8 @@ def get_weather(region):
     else:
         # 获取地区的location--id
         location_id = response["location"][0]["id"]
-    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}".format(location_id, key)
-    response = get(weather_url, headers=headers).json()
+    weather_url = "https://devapi.qweather.com/v7/weather/now?location={}&key={}"。format(location_id, key)
+    response = get(weather_url, headers=headers)。json()
     # 天气
     weather = response["now"]["text"]
     # 当前温度
@@ -59,8 +59,8 @@ def get_weather(region):
     # 风向
     wind_dir = response["now"]["windDir"]
     # 获取逐日天气预报
-    url = "https://devapi.qweather.com/v7/weather/3d?location={}&key={}".format(location_id, key)
-    response = get(url, headers=headers).json()
+    url = "https://devapi.qweather.com/v7/weather/3d?location={}&key={}"。format(location_id, key)
+    response = get(url, headers=headers)。json()
     # 最高气温
     max_temp = response["daily"][0]["tempMax"] + u"\N{DEGREE SIGN}" + "C"
     # 最低气温
@@ -69,8 +69,8 @@ def get_weather(region):
     sunrise = response["daily"][0]["sunrise"]
     # 日落时间
     sunset = response["daily"][0]["sunset"]
-    url = "https://devapi.qweather.com/v7/air/now?location={}&key={}".format(location_id, key)
-    response = get(url, headers=headers).json()
+    url = "https://devapi.qweather.com/v7/air/now?location={}&key={}"。format(location_id, key)
+    response = get(url, headers=headers)。json()
     if response["code"] == "200":
         # 空气质量
         category = response["now"]["category"]
@@ -80,9 +80,9 @@ def get_weather(region):
         # 国外城市获取不到数据
         category = ""
         pm2p5 = ""
-    id = random.randint(1, 16)
-    url = "https://devapi.qweather.com/v7/indices/1d?location={}&key={}&type={}".format(location_id, key, id)
-    response = get(url, headers=headers).json()
+    id = random.randint(1， 16)
+    url = "https://devapi.qweather.com/v7/indices/1d?location={}&key={}&type={}"。format(location_id, key, id)
+    response = get(url, headers=headers)。json()
     proposal = ""
     if response["code"] == "200":
         proposal += response["daily"][0]["text"]
@@ -92,14 +92,14 @@ def get_weather(region):
 def get_tianhang():
     try:
         key = config["tian_api"]
-        url = "http://api.tianapi.com/caihongpi/index?key={}".format(key)
+        url = "http://api.tianapi.com/caihongpi/index?key={}"。format(key)
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'，
             'Content-type': 'application/x-www-form-urlencoded'
 
         }
-        response = get(url, headers=headers).json()
+        response = get(url, headers=headers)。json()
         if response["code"] == 200:
             chp = response["newslist"][0]["content"]
         else:
@@ -117,7 +117,7 @@ def get_birthday(birthday, year, today):
         r_day = int(birthday.split("-")[2])
         # 获取农历生日的生日
         try:
-            year_date = ZhDate(year, r_mouth, r_day).to_datetime().date()
+            year_date = ZhDate(year, r_mouth, r_day)。to_datetime()。date()
         except TypeError:
             print("请检查生日的日子是否在今年存在")
             os.system("pause")
@@ -133,23 +133,23 @@ def get_birthday(birthday, year, today):
     if today > year_date:
         if birthday_year[0] == "r":
             # 获取农历明年生日的月和日
-            r_last_birthday = ZhDate((year + 1), r_mouth, r_day).to_datetime().date()
+            r_last_birthday = ZhDate((year + 1), r_mouth, r_day)。to_datetime()。date()
             birth_date = date((year + 1), r_last_birthday.month, r_last_birthday.day)
         else:
             birth_date = date((year + 1), birthday_month, birthday_day)
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+        birth_day = str(birth_date.__sub__(今天))。split(" ")[0]
     elif today == year_date:
         birth_day = 0
     else:
         birth_date = year_date
-        birth_day = str(birth_date.__sub__(today)).split(" ")[0]
+        birth_day = str(birth_date.__sub__(今天))。split(" ")[0]
     return birth_day
 
 
 def get_ciba():
     url = "http://open.iciba.com/dsapi/"
     headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'，
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
     }
@@ -161,11 +161,11 @@ def get_ciba():
 
 def send_message(to_user, access_token, region_name, weather, temp, wind_dir, note_ch, note_en, max_temp, min_temp,
                  sunrise, sunset, category, pm2p5, proposal, chp):
-    url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}".format(access_token)
-    week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
-    year = localtime().tm_year
-    month = localtime().tm_mon
-    day = localtime().tm_mday
+    url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token={}"。format(access_token)
+    week_list = ["星期日"， "星期一"， "星期二"， "星期三"， "星期四"， "星期五"， "星期六"]
+    year = localtime()。tm_year
+    month = localtime()。tm_mon
+    day = localtime()。tm_mday
     today = datetime.date(datetime(year=year, month=month, day=day))
     week = week_list[today.isoweekday() % 7]
     # 获取在一起的日子的日期格式
@@ -250,7 +250,10 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
                 "value": chp,
                 "color": get_color()
             },
-
+            "birth_day": {
+                "value": birth_day,
+                "color": get_color()
+            },
         }
     }
     for key, value in birthdays.items():
