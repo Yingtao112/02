@@ -250,10 +250,7 @@ def send_message(to_user, access_token, region_name, weather, temp, wind_dir, no
                 "value": chp,
                 "color": get_color()
             },
-            "birth_day": {
-                "value": birth_day,
-                "color": get_color()
-            },
+            
         }
     }
     for key, value in birthdays.items():
